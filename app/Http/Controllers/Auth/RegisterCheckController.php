@@ -10,13 +10,13 @@ use Illuminate\Validation\Rule;
 use App\Models\business_users;
 use App\Models\Provisional_registration_token;
 use Illuminate\Support\Str;
+use Mail;
+use App\Mail\MainRegisterMail;
 
 class RegisterCheckController extends Controller
 {
     public function index(Request $request) {
         $datas = $request->all();
-        \Log::info($datas);
-        
         $messages = [
             'email.unique' => 'メールアドレスは既に使用されています。',
         ];
@@ -43,6 +43,12 @@ class RegisterCheckController extends Controller
         $new_token->user_name = $request['user_name'];
         $new_token->token = $token;
         $new_token->save();
+        $variables = [];
+        $variables['url'] = config('app.front_url') . '/auth/main_registration/' . $token;
+        Mail::to($request['email'])->send(new MainRegisterMail($variables,$token));
+    // 	Mail::send('mails.main_register', $variables, function($message){
+    // 	    $message->to('test@test.com', 'Test')->subject('仮登録が完了しました。');
+    // 	});
         $res = ['code' => 200, 'msg' => 'OK'];
         return response()->json($res);
     }
