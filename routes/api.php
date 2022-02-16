@@ -24,3 +24,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return response()->json($res);
 // });
 Route::post('/register_check', [RegisterCheckController::class, 'index']);
+Route::post('/register_token', [RegisterCheckController::class, 'post_token']);

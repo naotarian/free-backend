@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 use Validator;
 use Illuminate\Validation\Rule;
 use App\Models\business_users;
+use App\Models\Provisional_registration_token;
+use Illuminate\Support\Str;
 
 class RegisterCheckController extends Controller
 {
@@ -16,7 +18,6 @@ class RegisterCheckController extends Controller
         \Log::info($datas);
         
         $messages = [
-            //'first_name.required' => '名前を入力してください',
             'email.unique' => 'メールアドレスは既に使用されています。',
         ];
         $validator = Validator::make($datas,[
@@ -26,14 +27,23 @@ class RegisterCheckController extends Controller
         if($validator->fails()){
             $res = ['code' => 400, 'msg' => '既に使用されているメールアドレスです。'];
             return response()->json($res);
-            // return redirect()->route('register')->withErrors($validator)->withInput();
         }
-        // $data = [];
-        // $data['email'] = $request['email'];
-        // \Log::info($request);
         $res = ['code' => 200, 'msg' => 'OK'];
-        
-        
+        return response()->json($res);
+    }
+    public function post_token(Request $request) {
+        $already_token = Provisional_registration_token::where('email', $request['email'])->first();
+        if($already_token) {
+            $already_token->delete();
+        }
+        $token = Str::random(64);
+        $new_token = new Provisional_registration_token;
+        $new_token->email = $request['email'];
+        $new_token->password = $request['password'];
+        $new_token->user_name = $request['user_name'];
+        $new_token->token = $token;
+        $new_token->save();
+        $res = ['code' => 200, 'msg' => 'OK'];
         return response()->json($res);
     }
 }
