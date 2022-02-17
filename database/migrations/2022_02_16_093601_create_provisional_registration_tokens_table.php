@@ -19,6 +19,7 @@ class CreateProvisionalRegistrationTokensTable extends Migration
             $table->string('user_name', 64)->nullable()->comment('ユーザー名');
             $table->string('email');
             $table->string('password')->nullable()->comment('パスワード');
+            $table->string('account_type')->nullable()->comment('アカウントタイプ');
             $table->timestamps();
             $table->softDeletes();
         });

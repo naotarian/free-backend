@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Validator;
 use Illuminate\Validation\Rule;
 use App\Models\business_users;
+use App\Models\general_users;
 use App\Models\Provisional_registration_token;
 use Illuminate\Support\Str;
 use Mail;
@@ -31,6 +32,7 @@ class RegisterCheckController extends Controller
         $res = ['code' => 200, 'msg' => 'OK'];
         return response()->json($res);
     }
+    //仮登録トークン保存処理
     public function post_token(Request $request) {
         $already_token = Provisional_registration_token::where('email', $request['email'])->first();
         if($already_token) {
@@ -42,13 +44,26 @@ class RegisterCheckController extends Controller
         $new_token->password = $request['password'];
         $new_token->user_name = $request['user_name'];
         $new_token->token = $token;
+        $new_token->account_type = $request['accountType'];
         $new_token->save();
         $variables = [];
         $variables['url'] = config('app.front_url') . '/auth/main_registration/' . $token;
         Mail::to($request['email'])->send(new MainRegisterMail($variables,$token));
-    // 	Mail::send('mails.main_register', $variables, function($message){
-    // 	    $message->to('test@test.com', 'Test')->subject('仮登録が完了しました。');
-    // 	});
+        $res = ['code' => 200, 'msg' => 'OK'];
+        return response()->json($res);
+    }
+    //本登録処理
+    public function main_register(Request $request) {
+        $token_table_datas = Provisional_registration_token::where('token', $request['token'])->first();
+        $token_table_array_datas = json_decode($token_table_datas, true);
+        $account_type = $token_table_array_datas['account_type'];
+        //一般かビジネスかの分岐
+        $new_user = $account_type == 'business' ? new business_users : new general_users;
+        $new_user->email = $token_table_array_datas['email'];
+        $new_user->password = $token_table_array_datas['password'];
+        $new_user->user_name = $token_table_array_datas['user_name'];
+        $new_user->save();
+        $token_table_datas->delete();
         $res = ['code' => 200, 'msg' => 'OK'];
         return response()->json($res);
     }
