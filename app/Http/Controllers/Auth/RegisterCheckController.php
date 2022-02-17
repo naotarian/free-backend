@@ -9,10 +9,12 @@ use Validator;
 use Illuminate\Validation\Rule;
 use App\Models\business_users;
 use App\Models\general_users;
+use App\Models\User;
 use App\Models\Provisional_registration_token;
 use Illuminate\Support\Str;
 use Mail;
 use App\Mail\MainRegisterMail;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterCheckController extends Controller
 {
@@ -22,7 +24,7 @@ class RegisterCheckController extends Controller
             'email.unique' => 'メールアドレスは既に使用されています。',
         ];
         $validator = Validator::make($datas,[
-            'email' => 'required|unique:business_users,email,40,id,deleted_at,NULL',
+            'email' => 'required|unique:users,email,40,id,deleted_at,NULL',
         ],$messages);
         
         if($validator->fails()){
@@ -56,12 +58,13 @@ class RegisterCheckController extends Controller
     public function main_register(Request $request) {
         $token_table_datas = Provisional_registration_token::where('token', $request['token'])->first();
         $token_table_array_datas = json_decode($token_table_datas, true);
-        $account_type = $token_table_array_datas['account_type'];
         //一般かビジネスかの分岐
-        $new_user = $account_type == 'business' ? new business_users : new general_users;
+        $new_user = new User;
+        // $new_user = $account_type == 'business' ? new business_users : new general_users;
         $new_user->email = $token_table_array_datas['email'];
-        $new_user->password = $token_table_array_datas['password'];
+        $new_user->password = Hash::make($token_table_array_datas['password']);
         $new_user->user_name = $token_table_array_datas['user_name'];
+        $new_user->account_type = $token_table_array_datas['account_type'];
         $new_user->save();
         $token_table_datas->delete();
         $res = ['code' => 200, 'msg' => 'OK'];
