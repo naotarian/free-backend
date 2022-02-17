@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login(Request $request): JsonResponse
+    public function login(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -19,16 +19,17 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return response()->json(['name' => Auth::user()->email], 200);
+            return response()->json(['name' => Auth::user()->email, 'msg' => 'OK'] , 200);
         }
-        throw new Exception('ログインに失敗しました。再度お試しください');
+        $res = ['msg' => 'メールアドレス又はパスワードが間違っています。'];
+        return response()->json($res, 200);
     }
     public function logout(Request $request)
     {
-        \Log::info('test');
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        $res = ['msg' => 'ログアウトしました'];
+        return response()->json($res);
     }
 }

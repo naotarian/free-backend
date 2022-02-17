@@ -14,8 +14,11 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+        $front = config('app.front_url');
+        \Log::info($front);
+        return redirect()->to('https://www.google.com');
         if (! $request->expectsJson()) {
-            return route('login');
+            return redirect()->to($front . '/login');
         }
     }
 }
