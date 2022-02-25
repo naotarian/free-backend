@@ -24,12 +24,12 @@ class LoginController extends Controller
     //     $res = ['msg' => 'メールアドレス又はパスワードが間違っています。'];
     //     return response()->json($res, 200);
     // }
-    // public function logout(Request $request)
-    // {
-    //     Auth::guard('web')->logout();
-    //     $request->session()->invalidate();
-    //     $request->session()->regenerateToken();
-    //     $res = ['msg' => 'ログアウトしました'];
-    //     return response()->json($res);
-    // }
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        $res = ['msg' => 'ログアウトしました'];
+        return response()->json($res);
+    }
 }

@@ -30,4 +30,4 @@ Route::post('/register_check', [RegisterCheckController::class, 'index']);
 Route::post('/register_token', [RegisterCheckController::class, 'post_token']);
 Route::post('/main_register', [RegisterCheckController::class, 'main_register']);
 Route::post('/login', [RegisterCheckController::class, 'login']);
-Route::post('/me', [RegisterCheckController::class, 'me']);
+Route::post('/me', [RegisterCheckController::class, 'me'])->middleware('auth:sanctum');

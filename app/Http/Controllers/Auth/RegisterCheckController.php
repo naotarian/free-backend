@@ -114,6 +114,7 @@ class RegisterCheckController extends Controller
     }
     public function me(Request $request)
         {
+            \Log::info($request->header('Authorization'));
             \Log::info('fdkoewkfd');
             \Log::info($request->user());
         return $request->user();
