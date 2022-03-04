@@ -25,6 +25,9 @@ Route::middleware('auth:sanctum')->get('/logout', [LoginController::class, 'logo
 //     $res = ['code' => 200, 'msg' => 'OK'];
 //     return response()->json($res);
 // });
+Route::post('/register', [RegisterCheckController::class, 'register']);
 Route::post('/register_check', [RegisterCheckController::class, 'index']);
 Route::post('/register_token', [RegisterCheckController::class, 'post_token']);
 Route::post('/main_register', [RegisterCheckController::class, 'main_register']);
+Route::post('/login', [RegisterCheckController::class, 'login']);
+Route::post('/me', [RegisterCheckController::class, 'me'])->middleware('auth:sanctum');
