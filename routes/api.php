@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterCheckController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\UserInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +32,4 @@ Route::post('/register_token', [RegisterCheckController::class, 'post_token']);
 Route::post('/main_register', [RegisterCheckController::class, 'main_register']);
 Route::post('/login', [RegisterCheckController::class, 'login']);
 Route::post('/me', [RegisterCheckController::class, 'me'])->middleware('auth:sanctum');
+Route::post('/edit_user_information', [UserInformationController::class, 'edit_user_information']);
