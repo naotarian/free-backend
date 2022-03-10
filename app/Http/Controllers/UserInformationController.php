@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Category;
+use App\Models\CategoryDetail;
 use Validator;
 
 class UserInformationController extends Controller
@@ -24,6 +26,11 @@ class UserInformationController extends Controller
             return response()->json($res);
         }
         $edit_user_recode = User::find($datas['id']);
+        $occupation_id = Category::select('id')->where('name', $datas['category1Name'])->first();
+        $occupation_detail_id = CategoryDetail::select('id')->where('name', $datas['category2Name'])->first();
+        $datas['occupation_id'] = $occupation_id['id'];
+        $datas['occupation_detail_id'] = $occupation_detail_id['id'];
+        \Log::info($datas);
         $edit_user_recode->fill($datas);
         $msg = [];
         $msg['msg'] = '変更がありません。';
@@ -36,6 +43,7 @@ class UserInformationController extends Controller
         }
         return response()->json([
             'data' => $msg,
+            'category_detail_id' => $edit_user_recode['occupation_detail_id']
         ]);
     }
 }
