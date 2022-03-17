@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterCheckController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserInformationController;
+use App\Http\Controllers\DynamicController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,6 @@ Route::post('/main_register', [RegisterCheckController::class, 'main_register'])
 Route::post('/login', [RegisterCheckController::class, 'login']);
 Route::post('/me', [RegisterCheckController::class, 'me'])->middleware('auth:sanctum');
 Route::post('/edit_user_information', [UserInformationController::class, 'edit_user_information']);
+Route::post('/index_get', [DynamicController::class, 'index_get']);
+Route::post('/get_matters', [DynamicController::class, 'get_matters']);
+Route::post('/create_matters', [DynamicController::class, 'create_matters']);
