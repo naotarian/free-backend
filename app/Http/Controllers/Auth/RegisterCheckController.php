@@ -89,6 +89,6 @@ class RegisterCheckController extends Controller
         ]);
     }
     public function me(Request $request) {
-        return $request->user();
+        return response($request->user())->header('Cache-Control', 'public');
     }
 }
