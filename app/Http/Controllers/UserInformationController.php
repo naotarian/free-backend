@@ -38,6 +38,7 @@ class UserInformationController extends Controller
         //変更の有無確認
         if($edit_user_recode->isDirty()) {
             $edit_user_recode->save();
+            $msg['data'] = $edit_user_recode;
             $msg['msg'] = '更新しました。';
             $msg['status'] = true;
         }
