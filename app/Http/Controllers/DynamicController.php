@@ -25,7 +25,6 @@ class DynamicController extends Controller
     //案件一覧情報取得
     public function get_matters(Request $request) {
         $matters_info = [];
-        \Log::info('teset');
         return response()->json([
             'matters' => $matters_info
         ]);
@@ -37,6 +36,11 @@ class DynamicController extends Controller
         $publish_date = new Carbon($datas['yaer'] . '-' . $datas['month'] . '-' . $datas['day']);
         $datas['is_display'] = $publish_date > $today ? 0 : 1;
         $datas['publish_date'] = $publish_date->format('Y-m-d');
+        foreach($datas['data'] as $key => $data) {
+            \Log::info($key);
+            $datas['sub_title_' . ($key + 1)] = $data['sub_title'];
+            $datas['content_' . ($key + 1)] = $data['content'];
+        }
         //バリデーション処理
         $new_ins = new Matter;
         $new_ins->fill($datas);
