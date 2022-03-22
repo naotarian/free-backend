@@ -17,6 +17,8 @@ class CreateMattersTable extends Migration
             $table->id();
             $table->integer('user_id')->comment('ユーザーID');
             $table->boolean('is_display')->nullable()->default(1)->comment('0: 非表示, 1: 表示');
+            $table->integer('occupation_id')->nullable()->comment('職種ID');
+            $table->integer('occupation_detail_id')->nullable()->comment('職種詳細ID');
             $table->string('title', 128)->nullable()->comment('タイトル');
             $table->string('sub_title_1', 128)->nullable()->comment('サブタイトル1');
             $table->text('content_1')->nullable()->comment('内容テキスト1');
