@@ -25,6 +25,8 @@ class DynamicController extends Controller
     //案件一覧情報取得
     public function get_matters(Request $request) {
         $matters_info = [];
+        $matters_info['categories'] = Category::all();
+        $matters_info['category_detail'] = CategoryDetail::all();
         return response()->json([
             'matters' => $matters_info
         ]);
