@@ -37,3 +37,4 @@ Route::post('/index_get', [DynamicController::class, 'index_get']);
 Route::post('/get_matters', [DynamicController::class, 'get_matters']);
 Route::post('/create_matters', [DynamicController::class, 'create_matters']);
 Route::middleware('auth:sanctum')->post('/me', [RegisterCheckController::class, 'me']);
+Route::post('/default_matters', [DynamicController::class, 'default_matters']);
