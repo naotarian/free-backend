@@ -39,7 +39,6 @@ class DynamicController extends Controller
         $datas['is_display'] = $publish_date > $today ? 0 : 1;
         $datas['publish_date'] = $publish_date->format('Y-m-d');
         foreach($datas['data'] as $key => $data) {
-            \Log::info($key);
             $datas['sub_title_' . ($key + 1)] = $data['sub_title'];
             $datas['content_' . ($key + 1)] = $data['content'];
         }
@@ -53,6 +52,11 @@ class DynamicController extends Controller
             $res = ['status' => 'NG'];
         }
         return response()->json($res);
-        
+    }
+    
+    public function default_matters(Request $request) {
+        $category = $request['category'];
+        $matters = Matter::where('occupation_detail_id', $category)->get();
+        return response()->json($matters);
     }
 }
