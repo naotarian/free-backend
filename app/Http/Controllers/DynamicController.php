@@ -23,7 +23,7 @@ class DynamicController extends Controller
         ]);
     }
     //案件一覧情報取得
-    public function get_matters(Request $request) {
+    public function get_category(Request $request) {
         $matters_info = [];
         $matters_info['categories'] = Category::all();
         $matters_info['category_detail'] = CategoryDetail::all();
@@ -53,10 +53,16 @@ class DynamicController extends Controller
         }
         return response()->json($res);
     }
-    
+    //案件初期データAPI
     public function default_matters(Request $request) {
         $category = $request['category'];
         $matters = Matter::where('occupation_detail_id', $category)->get();
+        return response()->json($matters);
+    }
+    //カテゴリ絞り込み時
+    public function get_matters(Request $request) {
+        $res = ['status' => 'OK'];
+        $matters = Matter::whereIn('occupation_detail_id',$request)->get();
         return response()->json($matters);
     }
 }

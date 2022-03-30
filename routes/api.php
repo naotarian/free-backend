@@ -34,7 +34,8 @@ Route::post('/main_register', [RegisterCheckController::class, 'main_register'])
 Route::post('/login', [RegisterCheckController::class, 'login']);
 Route::post('/edit_user_information', [UserInformationController::class, 'edit_user_information']);
 Route::post('/index_get', [DynamicController::class, 'index_get']);
-Route::post('/get_matters', [DynamicController::class, 'get_matters']);
+Route::post('/get_category', [DynamicController::class, 'get_category']);
 Route::post('/create_matters', [DynamicController::class, 'create_matters']);
 Route::middleware('auth:sanctum')->post('/me', [RegisterCheckController::class, 'me']);
 Route::post('/default_matters', [DynamicController::class, 'default_matters']);
+Route::post('/get_matters', [DynamicController::class, 'get_matters']);
